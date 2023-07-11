@@ -19,7 +19,7 @@ func main() {
 		return c.Render("index", fiber.Map{})
 	})
 
-	app.Static("/assets", "./assets")
+	app.Static("/assets", "./assets/dist")
 
 	app.Get("/home", func(c *fiber.Ctx) error {
 

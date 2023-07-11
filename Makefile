@@ -6,7 +6,10 @@ build:
 test:
 	go test -v ./...
 
-run:
+css:
+	@tailwindcss -i ./assets/app.css -o ./assets/dist/app.css 
+
+run: css
 	@go run cmd/server/server.go
 
 fmt:
