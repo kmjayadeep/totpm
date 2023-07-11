@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 	"github.com/kmjayadeep/totpm/pkg/data"
+	"github.com/xlzd/gotp"
 )
 
 func main() {
@@ -23,13 +24,35 @@ func main() {
 
 	app.Get("/home", func(c *fiber.Ctx) error {
 
-		otps := []data.Totp{{
+		sites := []data.Site{{
 			Name:   "amazon",
 			Secret: "koo",
 		}}
 
 		return c.Render("home", fiber.Map{
-			"otps": otps,
+			"sites": sites,
+		})
+	})
+
+	app.Get("/home/:id", func(c *fiber.Ctx) error {
+
+		_ = c.Params("id", "0")
+
+		sites := []data.Site{{
+			Name:   "amazon",
+			Secret: "MFRGGCQ=",
+		}}
+
+		current := sites[0]
+
+		totp := gotp.NewDefaultTOTP(current.Secret)
+		code, exp := totp.NowWithExpiration()
+
+		return c.Render("home", fiber.Map{
+			"sites":   sites,
+			"current": current,
+			"code":    code,
+			"exp":     exp,
 		})
 	})
 

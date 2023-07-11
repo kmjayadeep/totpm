@@ -1,4 +1,8 @@
-<h1>Good</h1>
-{{ range .otps}}
-<div>{{ .Name }}</div>
-{{ end}}
+<div class="container mx-auto">
+  <h1>Sites</h1>
+  {{ range .sites}}
+    <div>{{ .Name }}</div>
+  {{ end}}
+  <div>{{ .code }}</div>
+  <div>{{ .exp }}</div>
+</div>

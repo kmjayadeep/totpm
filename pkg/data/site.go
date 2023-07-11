@@ -1,6 +1,6 @@
 package data
 
-type Totp struct {
+type Site struct {
 	Logo    string
 	Website string
 	Name    string
