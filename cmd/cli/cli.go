@@ -6,9 +6,11 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"time"
 
 	"github.com/alecthomas/kingpin/v2"
-	"github.com/kmjayadeep/totpm/internal/cli"
+	"github.com/kmjayadeep/totpm/pkg/data"
+	"github.com/pquerna/otp/totp"
 )
 
 var (
@@ -54,12 +56,12 @@ func listOtps() {
 		panic(err.Error() + "Unable to list OTPs")
 	}
 
-	var otps []cli.Otp
-	if err := json.NewDecoder(res.Body).Decode(&otps); err != nil {
+	var sites []data.Site
+	if err := json.NewDecoder(res.Body).Decode(&sites); err != nil {
 		panic(err.Error() + "Unable to list OTPs")
 	}
 
-	for _, o := range otps {
+	for _, o := range sites {
 		fmt.Printf("%d\t%s\n", o.ID, o.Name)
 	}
 }
@@ -80,14 +82,18 @@ func getCode() {
 		panic(err.Error() + "Unable to get OTP")
 	}
 
-	var otps []cli.Otp
-	if err := json.NewDecoder(res.Body).Decode(&otps); err != nil {
+	var sites []data.Site
+	if err := json.NewDecoder(res.Body).Decode(&sites); err != nil {
 		panic(err.Error() + "Unable to get OTP")
 	}
 
-	for _, o := range otps {
+	for _, o := range sites {
 		if o.Name == *otpSite {
-			fmt.Println(o.Secret)
+			code, err := totp.GenerateCode(o.Secret, time.Now())
+			if err != nil {
+				panic(err.Error() + "Unable to get OTP")
+			}
+			fmt.Println(code)
 			return
 		}
 	}
