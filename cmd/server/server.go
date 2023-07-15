@@ -8,7 +8,6 @@ import (
 	"github.com/kmjayadeep/totpm/internal/config"
 	"github.com/kmjayadeep/totpm/pkg/data"
 	"github.com/kmjayadeep/totpm/pkg/handler"
-	"github.com/xlzd/gotp"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -37,40 +36,11 @@ func main() {
 
 	app.Static("/assets", "./assets/dist")
 
-	app.Get("/home", func(c *fiber.Ctx) error {
+	// Render pages
+	app.Get("/home", h.RenderSites)
+	app.Get("/home/:id", h.RenderSite)
 
-		sites := []data.Site{{
-			Name:   "amazon",
-			Secret: "koo",
-		}}
-
-		return c.Render("home", fiber.Map{
-			"sites": sites,
-		})
-	})
-
-	app.Get("/home/:id", func(c *fiber.Ctx) error {
-
-		_ = c.Params("id", "0")
-
-		sites := []data.Site{{
-			Name:   "amazon",
-			Secret: "MFRGGCQ=",
-		}}
-
-		current := sites[0]
-
-		totp := gotp.NewDefaultTOTP(current.Secret)
-		code, exp := totp.NowWithExpiration()
-
-		return c.Render("home", fiber.Map{
-			"sites":   sites,
-			"current": current,
-			"code":    code,
-			"exp":     exp,
-		})
-	})
-
+	// APIs
 	app.Get("/api/site", h.GetSites)
 	app.Post("/api/site", h.AddSite)
 
