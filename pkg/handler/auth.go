@@ -1,17 +1,15 @@
 package handler
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/kmjayadeep/totpm/pkg/types"
 	supa "github.com/nedpals/supabase-go"
 )
 
-type AuthInput struct {
-	Email    string
-	Password string
-}
-
 func (h *Handler) Signup(c *fiber.Ctx) error {
-	in := AuthInput{}
+	in := types.AuthInput{}
 	if err := c.BodyParser(&in); err != nil {
 		return err
 	}
@@ -28,7 +26,7 @@ func (h *Handler) Signup(c *fiber.Ctx) error {
 }
 
 func (h *Handler) Login(c *fiber.Ctx) error {
-	in := AuthInput{}
+	in := types.AuthInput{}
 	if err := c.BodyParser(&in); err != nil {
 		return err
 	}

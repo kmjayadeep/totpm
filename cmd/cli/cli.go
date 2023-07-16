@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -9,7 +10,9 @@ import (
 	"time"
 
 	"github.com/alecthomas/kingpin/v2"
+	"github.com/kmjayadeep/totpm/pkg/configfile"
 	"github.com/kmjayadeep/totpm/pkg/data"
+	"github.com/kmjayadeep/totpm/pkg/types"
 	"github.com/pquerna/otp/totp"
 )
 
@@ -18,7 +21,8 @@ var (
 	server = app.Flag("server", "Server address.").Default("http://localhost:3000").URL()
 
 	login      = app.Command("login", "Login to the server")
-	loginToken = login.Flag("token", "API token").String()
+	loginEmail = login.Flag("email", "Email address").String()
+	loginPass  = login.Flag("password", "Password").String()
 
 	otpList = app.Command("list", "List OTPs")
 	otpCode = app.Command("code", "Show OTP token")
@@ -30,7 +34,7 @@ func main() {
 
 	// Register user
 	case login.FullCommand():
-		println(*loginToken)
+		authLogin()
 
 	case otpList.FullCommand():
 		listOtps()
@@ -79,7 +83,7 @@ func getCode() {
 	}
 
 	if res.StatusCode != http.StatusOK {
-		panic(err.Error() + "Unable to get OTP")
+		panic("Unable to get OTP")
 	}
 
 	var sites []data.Site
@@ -99,4 +103,47 @@ func getCode() {
 	}
 
 	panic("Unable to find the given OTP")
+}
+
+func authLogin() {
+	u := **server
+	u.Path = path.Join(u.Path, "api/auth/login")
+
+	in := types.AuthInput{
+		Email:    *loginEmail,
+		Password: *loginPass,
+	}
+
+	d, err := json.Marshal(in)
+	handleError(err)
+
+	res, err := http.Post(u.String(), "application/json", bytes.NewBuffer(d))
+	handleError(err)
+
+	if res.StatusCode == http.StatusUnauthorized {
+		panic("Invalid creds.. please login again")
+	}
+
+	if res.StatusCode != http.StatusOK {
+		panic("Unable to Login")
+	}
+
+	var token struct {
+		AccessToken string `json:"access_token"`
+		ExpiresIn   uint   `json:"expires_in"`
+	}
+	err = json.NewDecoder(res.Body).Decode(&token)
+	handleError(err)
+
+	c := &configfile.Config{
+		Token: token.AccessToken,
+	}
+
+	handleError(c.Write())
+}
+
+func handleError(err error) {
+	if err != nil {
+		panic(err.Error())
+	}
 }
