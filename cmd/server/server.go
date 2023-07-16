@@ -47,6 +47,7 @@ func main() {
 	app.Post("/api/auth/login", h.Login)
 
 	app.Get("/api/site", h.RequiresAuth, h.GetSites)
+	app.Get("/api/site/:id", h.RequiresAuth, h.GetSite)
 	app.Post("/api/site", h.RequiresAuth, h.AddSite)
 
 	log.Fatal(app.Listen(":3000"))

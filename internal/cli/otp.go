@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path"
+	"strconv"
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -81,36 +82,58 @@ func (c *Cli) addOtp(uri, name, secret *string) {
 }
 
 func (c *Cli) getCode(site *string) {
+	c.refreshCache()
 	u := **c.server
-	u.Path = path.Join(u.Path, "api/site")
-	res, err := http.Get(u.String())
-	if err != nil {
-		panic(err.Error() + "Unable to get OTP")
+
+	config, err := configfile.Read()
+	c.handleError(err)
+	cache, err := configfile.ReadCache()
+	c.handleError(err)
+
+	id := uint(0)
+
+	idx, err := strconv.Atoi(*site)
+	if err == nil {
+		if idx > len(cache.Otps) {
+			c.handleError(fmt.Errorf("Invalid otp id"))
+		}
+		id = cache.Otps[idx-1].ID
+	} else {
+		for _, s := range cache.Otps {
+			if s.Name == *site {
+				id = s.ID
+				break
+			}
+		}
+	}
+	if id == 0 {
+		c.handleError(fmt.Errorf("Invalid otp name"))
 	}
 
+	u.Path = path.Join(u.Path, "api/site/", strconv.Itoa(int(id)))
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	c.handleError(err)
+
+	req.Header.Set("x-access-token", config.Token)
+	res, err := client.Do(req)
+	c.handleError(err)
+
 	if res.StatusCode == http.StatusUnauthorized {
-		panic("Invalid token.. please login again")
+		c.handleError(fmt.Errorf("Invalid token.. please login again"))
 	}
 
 	if res.StatusCode != http.StatusOK {
-		panic("Unable to get OTP")
+		c.handleErrorBody(res.Body, "Unable to get OTP")
 	}
 
-	var sites []data.Site
-	if err := json.NewDecoder(res.Body).Decode(&sites); err != nil {
-		panic(err.Error() + "Unable to get OTP")
+	otp := data.Site{}
+	if err := json.NewDecoder(res.Body).Decode(&otp); err != nil {
+		c.handleError(fmt.Errorf("Unable to get OTP"))
 	}
 
-	for _, o := range sites {
-		if o.Name == *site {
-			code, err := totp.GenerateCode(o.Secret, time.Now())
-			if err != nil {
-				panic(err.Error() + "Unable to get OTP")
-			}
-			fmt.Println(code)
-			return
-		}
-	}
+	code, err := totp.GenerateCode(otp.Secret, time.Now())
+	c.handleError(err)
 
-	panic("Unable to find the given OTP")
+	fmt.Println(code)
 }

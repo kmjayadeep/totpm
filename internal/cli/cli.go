@@ -2,6 +2,8 @@ package cli
 
 import (
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/url"
 	"os"
 
@@ -29,7 +31,7 @@ func (c *Cli) Run() {
 	otpList := app.Command("list", "List OTPs")
 
 	otpCode := app.Command("code", "Show OTP token")
-	otpName := otpCode.Arg("name", "Name of the otp (optional)").String()
+	otpName := otpCode.Arg("name", "Name/ID of the otp").Required().String()
 
 	otpAdd := app.Command("add", "Add new totp")
 	otpAddUri := otpAdd.Flag("uri", "otpauth:// Uri").String()
@@ -60,4 +62,22 @@ func (c *Cli) handleError(err error) {
 		}
 		panic("Unexpected error; Use --debug flag to view more details")
 	}
+}
+
+func (c *Cli) handleErrorMsg(err error, msg string) {
+	if err != nil {
+		if *c.debug {
+			fmt.Println("Error: " + err.Error())
+		}
+		panic("Error : " + msg + "; Use --debug flag to view more details")
+	}
+}
+
+func (c *Cli) handleErrorBody(body io.ReadCloser, msg string) {
+	if *c.debug {
+		b, err := ioutil.ReadAll(body)
+		c.handleError(err)
+		fmt.Println("Body: " + string(b))
+	}
+	panic("Error : " + msg + "; Use --debug flag to view more details")
 }
