@@ -1,3 +1,4 @@
 DB_CONNECTION_STRING="user=postgres password=[YOUR-PASSWORD] host=[HOST] port=5432 dbname=postgres"
 SUPABASE_URL=
 SUPABASE_KEY=
+JWT_SECRET=

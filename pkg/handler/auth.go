@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/kmjayadeep/totpm/pkg/types"
 	supa "github.com/nedpals/supabase-go"

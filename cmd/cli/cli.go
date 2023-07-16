@@ -47,17 +47,26 @@ func main() {
 func listOtps() {
 	u := **server
 	u.Path = path.Join(u.Path, "api/site")
-	res, err := http.Get(u.String())
-	if err != nil {
-		panic(err.Error() + "Unable to list OTPs")
-	}
+
+	config, err := configfile.Read()
+	handleError(err)
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("GET", u.String(), nil)
+	handleError(err)
+
+	req.Header.Set("x-access-token", config.Token)
+
+	res, err := client.Do(req)
+	handleError(err)
 
 	if res.StatusCode == http.StatusUnauthorized {
 		panic("Invalid token.. please login again")
 	}
 
 	if res.StatusCode != http.StatusOK {
-		panic(err.Error() + "Unable to list OTPs")
+		panic("Unable to list OTPs")
 	}
 
 	var sites []data.Site

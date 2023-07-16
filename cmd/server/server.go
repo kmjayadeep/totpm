@@ -43,10 +43,11 @@ func main() {
 	app.Get("/home/:id", h.RenderSite)
 
 	// APIs
-	app.Get("/api/site", h.GetSites)
-	app.Post("/api/site", h.AddSite)
 	app.Post("/api/auth/signup", h.Signup)
 	app.Post("/api/auth/login", h.Login)
+
+	app.Get("/api/site", h.RequiresAuth, h.GetSites)
+	app.Post("/api/site", h.RequiresAuth, h.AddSite)
 
 	log.Fatal(app.Listen(":3000"))
 }
