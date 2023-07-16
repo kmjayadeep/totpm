@@ -8,6 +8,7 @@ import (
 	"github.com/kmjayadeep/totpm/internal/config"
 	"github.com/kmjayadeep/totpm/pkg/data"
 	"github.com/kmjayadeep/totpm/pkg/handler"
+	supa "github.com/nedpals/supabase-go"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -27,8 +28,9 @@ func main() {
 		log.Fatal(err)
 	}
 	db.AutoMigrate(&data.Site{})
+	supabase := supa.CreateClient(config.Get().SupabaseURL, config.Get().SupabaseKey)
 
-	h := handler.NewHandler(db)
+	h := handler.NewHandler(db, supabase)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("index", fiber.Map{})
@@ -43,6 +45,8 @@ func main() {
 	// APIs
 	app.Get("/api/site", h.GetSites)
 	app.Post("/api/site", h.AddSite)
+	app.Post("/api/auth/signup", h.Signup)
+	app.Post("/api/auth/login", h.Login)
 
 	log.Fatal(app.Listen(":3000"))
 }

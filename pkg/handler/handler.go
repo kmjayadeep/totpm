@@ -1,13 +1,18 @@
 package handler
 
-import "gorm.io/gorm"
+import (
+	supa "github.com/nedpals/supabase-go"
+	"gorm.io/gorm"
+)
 
 type Handler struct {
-	db *gorm.DB
+	db       *gorm.DB
+	supabase *supa.Client
 }
 
-func NewHandler(db *gorm.DB) *Handler {
+func NewHandler(db *gorm.DB, sc *supa.Client) *Handler {
 	return &Handler{
-		db: db,
+		db:       db,
+		supabase: sc,
 	}
 }
