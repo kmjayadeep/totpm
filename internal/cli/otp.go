@@ -1,14 +1,19 @@
 package cli
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"path"
+	"sort"
 	"time"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/kmjayadeep/totpm/pkg/configfile"
 	"github.com/kmjayadeep/totpm/pkg/data"
+	"github.com/kmjayadeep/totpm/pkg/types"
 	"github.com/pquerna/otp/totp"
 )
 
@@ -30,21 +35,76 @@ func (c *Cli) listOtps() {
 	c.handleError(err)
 
 	if res.StatusCode == http.StatusUnauthorized {
-		panic("Invalid token.. please login again")
+		c.handleError(fmt.Errorf("Invalid token... please login again"))
 	}
 
 	if res.StatusCode != http.StatusOK {
-		panic("Unable to list OTPs")
+		c.handleError(fmt.Errorf("Unable to list OTPs"))
 	}
 
 	var sites []data.Site
 	if err := json.NewDecoder(res.Body).Decode(&sites); err != nil {
-		panic(err.Error() + "Unable to list OTPs")
+		c.handleError(fmt.Errorf("Unable to list OTPs"))
 	}
 
-	for _, o := range sites {
-		fmt.Printf("%d\t%s\n", o.ID, o.Name)
+	fmt.Println("Id\tName\n============")
+
+	sort.Slice(sites, func(i, j int) bool {
+		return sites[i].Name < sites[j].Name
+	})
+
+	for i, o := range sites {
+		fmt.Printf("%d\t%s\n", i+1, o.Name)
 	}
+}
+
+func (c *Cli) addOtp(uri, name, secret *string) {
+	u := *c.server
+	u.Path = path.Join(u.Path, "api/site")
+
+	config, err := configfile.Read()
+	c.handleError(err)
+
+	if *name == "" {
+		prompt := &survey.Input{
+			Message: "Name",
+		}
+		survey.AskOne(prompt, name, survey.WithValidator(survey.Required))
+	}
+
+	if *secret == "" {
+		prompt := &survey.Password{
+			Message: "Secret",
+		}
+		survey.AskOne(prompt, secret, survey.WithValidator(survey.Required))
+	}
+
+	in := types.OtpInput{
+		OtpAuthUri: *uri,
+		Name:       *name,
+		Secret:     *secret,
+	}
+	d, err := json.Marshal(&in)
+	c.handleError(err)
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("POST", u.String(), bytes.NewBuffer(d))
+	c.handleError(err)
+
+	req.Header.Set("x-access-token", config.Token)
+	req.Header.Set("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	c.handleError(err)
+
+	if res.StatusCode != http.StatusOK {
+		b, err := ioutil.ReadAll(res.Body)
+		c.handleError(err)
+		c.handleError(fmt.Errorf("Unable to add new totp; server response: " + string(b)))
+	}
+
+	c.PrintSuccess("Otp added successfully!")
 }
 
 func (c *Cli) getCode(site *string) {

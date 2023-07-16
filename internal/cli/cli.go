@@ -27,8 +27,14 @@ func (c *Cli) Run() {
 	loginPass := login.Flag("password", "Password").String()
 
 	otpList := app.Command("list", "List OTPs")
+
 	otpCode := app.Command("code", "Show OTP token")
 	otpName := otpCode.Arg("name", "Name of the otp (optional)").String()
+
+	otpAdd := app.Command("add", "Add new totp")
+	otpAddUri := otpAdd.Flag("uri", "otpauth:// Uri").String()
+	otpAddName := otpAdd.Flag("name", "Identifier for the otp token").String()
+	otpAddSecret := otpAdd.Flag("secret", "Secret value").String()
 
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 
@@ -41,6 +47,9 @@ func (c *Cli) Run() {
 
 	case otpCode.FullCommand():
 		c.getCode(otpName)
+
+	case otpAdd.FullCommand():
+		c.addOtp(otpAddUri, otpAddName, otpAddSecret)
 	}
 }
 
@@ -49,6 +58,6 @@ func (c *Cli) handleError(err error) {
 		if *c.debug {
 			fmt.Println("Error: " + err.Error())
 		}
-		panic(err.Error())
+		panic("Unexpected error; Use --debug flag to view more details")
 	}
 }
