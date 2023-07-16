@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path"
-	"sort"
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -18,48 +17,20 @@ import (
 )
 
 func (c *Cli) listOtps() {
-	u := *c.server
-	u.Path = path.Join(u.Path, "api/site")
+	c.refreshCache()
 
-	config, err := configfile.Read()
+	cache, err := configfile.ReadCache()
 	c.handleError(err)
-
-	client := &http.Client{}
-
-	req, err := http.NewRequest("GET", u.String(), nil)
-	c.handleError(err)
-
-	req.Header.Set("x-access-token", config.Token)
-
-	res, err := client.Do(req)
-	c.handleError(err)
-
-	if res.StatusCode == http.StatusUnauthorized {
-		c.handleError(fmt.Errorf("Invalid token... please login again"))
-	}
-
-	if res.StatusCode != http.StatusOK {
-		c.handleError(fmt.Errorf("Unable to list OTPs"))
-	}
-
-	var sites []data.Site
-	if err := json.NewDecoder(res.Body).Decode(&sites); err != nil {
-		c.handleError(fmt.Errorf("Unable to list OTPs"))
-	}
 
 	fmt.Println("Id\tName\n============")
 
-	sort.Slice(sites, func(i, j int) bool {
-		return sites[i].Name < sites[j].Name
-	})
-
-	for i, o := range sites {
+	for i, o := range cache.Otps {
 		fmt.Printf("%d\t%s\n", i+1, o.Name)
 	}
 }
 
 func (c *Cli) addOtp(uri, name, secret *string) {
-	u := *c.server
+	u := **c.server
 	u.Path = path.Join(u.Path, "api/site")
 
 	config, err := configfile.Read()
@@ -104,11 +75,13 @@ func (c *Cli) addOtp(uri, name, secret *string) {
 		c.handleError(fmt.Errorf("Unable to add new totp; server response: " + string(b)))
 	}
 
+	c.refreshCache()
+
 	c.PrintSuccess("Otp added successfully!")
 }
 
 func (c *Cli) getCode(site *string) {
-	u := *c.server
+	u := **c.server
 	u.Path = path.Join(u.Path, "api/site")
 	res, err := http.Get(u.String())
 	if err != nil {

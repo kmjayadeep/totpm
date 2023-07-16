@@ -5,3 +5,8 @@ type OtpInput struct {
 	Secret     string
 	OtpAuthUri string
 }
+
+type Otp struct {
+	ID   uint
+	Name string
+}
