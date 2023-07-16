@@ -17,17 +17,17 @@ func (c *Cli) listOtps() {
 	u.Path = path.Join(u.Path, "api/site")
 
 	config, err := configfile.Read()
-	handleError(err)
+	c.handleError(err)
 
 	client := &http.Client{}
 
 	req, err := http.NewRequest("GET", u.String(), nil)
-	handleError(err)
+	c.handleError(err)
 
 	req.Header.Set("x-access-token", config.Token)
 
 	res, err := client.Do(req)
-	handleError(err)
+	c.handleError(err)
 
 	if res.StatusCode == http.StatusUnauthorized {
 		panic("Invalid token.. please login again")

@@ -28,3 +28,6 @@ clean:
 # Cli commands
 run-cli:
 	@go run cmd/cli/cli.go
+
+install: build
+	cp bin/totp ~/bin
