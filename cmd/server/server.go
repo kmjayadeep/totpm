@@ -48,6 +48,7 @@ func main() {
 
 	app.Get("/api/site", h.RequiresAuth, h.GetSites)
 	app.Get("/api/site/:id", h.RequiresAuth, h.GetSite)
+	app.Delete("/api/site/:id", h.RequiresAuth, h.DeleteSite)
 	app.Post("/api/site", h.RequiresAuth, h.AddSite)
 
 	log.Fatal(app.Listen(":3000"))

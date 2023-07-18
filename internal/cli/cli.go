@@ -33,6 +33,9 @@ func (c *Cli) Run() {
 	otpCode := app.Command("code", "Show OTP token")
 	otpName := otpCode.Arg("name", "Name/ID of the otp").Required().String()
 
+	otpDelete := app.Command("delete", "Delete OTP token")
+	otpDeleteName := otpDelete.Arg("name", "Name/ID of the otp").Required().String()
+
 	otpAdd := app.Command("add", "Add new totp")
 	otpAddUri := otpAdd.Flag("uri", "otpauth:// Uri").String()
 	otpAddName := otpAdd.Flag("name", "Identifier for the otp token").String()
@@ -49,6 +52,9 @@ func (c *Cli) Run() {
 
 	case otpCode.FullCommand():
 		c.getCode(otpName)
+
+	case otpDelete.FullCommand():
+		c.delete(otpDeleteName)
 
 	case otpAdd.FullCommand():
 		c.addOtp(otpAddUri, otpAddName, otpAddSecret)

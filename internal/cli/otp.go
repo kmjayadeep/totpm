@@ -141,3 +141,52 @@ func (c *Cli) getCode(site *string) {
 
 	fmt.Println(code)
 }
+
+func (c *Cli) delete(site *string) {
+	c.refreshCache()
+	u := **c.server
+
+	config, err := configfile.Read()
+	c.handleError(err)
+	cache, err := configfile.ReadCache()
+	c.handleError(err)
+
+	id := uint(0)
+
+	idx, err := strconv.Atoi(*site)
+	if err == nil {
+		if idx > len(cache.Otps) {
+			c.handleError(fmt.Errorf("Invalid otp id"))
+		}
+		id = cache.Otps[idx-1].ID
+	} else {
+		for _, s := range cache.Otps {
+			if s.Name == *site {
+				id = s.ID
+				break
+			}
+		}
+	}
+	if id == 0 {
+		c.handleError(fmt.Errorf("Invalid otp name"))
+	}
+
+	u.Path = path.Join(u.Path, "api/site/", strconv.Itoa(int(id)))
+	client := &http.Client{}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	c.handleError(err)
+
+	req.Header.Set("x-access-token", config.Token)
+	res, err := client.Do(req)
+	c.handleError(err)
+
+	if res.StatusCode == http.StatusUnauthorized {
+		c.handleError(fmt.Errorf("Invalid token.. please login again"))
+	}
+
+	if res.StatusCode != http.StatusOK {
+		c.handleErrorBody(res.Body, "Unable to delete OTP")
+	}
+
+	c.PrintSuccess("OTP Deleted successfully")
+}

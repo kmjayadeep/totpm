@@ -30,6 +30,23 @@ func (h *Handler) GetSite(c *fiber.Ctx) error {
 	return c.JSON(site)
 }
 
+func (h *Handler) DeleteSite(c *fiber.Ctx) error {
+	user := c.Locals(LocalKeyUser).(*supa.User)
+
+	id := c.Params("id")
+
+	site := data.Site{}
+	if res := h.db.Where("user_id=? and id=?", user.ID, id).First(&site); res.Error != nil {
+		return res.Error
+	}
+
+	if res := h.db.Delete(&site); res.Error != nil {
+		return res.Error
+	}
+
+	return c.SendStatus(fiber.StatusOK)
+}
+
 func (h *Handler) AddSite(c *fiber.Ctx) error {
 	user := c.Locals(LocalKeyUser).(*supa.User)
 
