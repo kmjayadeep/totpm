@@ -60,7 +60,8 @@ func (c *Cli) handleError(err error) {
 		if *c.debug {
 			fmt.Println("Error: " + err.Error())
 		}
-		panic("Unexpected error; Use --debug flag to view more details")
+		fmt.Println("Unexpected error; Use --debug flag to view more details")
+		os.Exit(1)
 	}
 }
 
@@ -69,7 +70,8 @@ func (c *Cli) handleErrorMsg(err error, msg string) {
 		if *c.debug {
 			fmt.Println("Error: " + err.Error())
 		}
-		panic("Error : " + msg + "; Use --debug flag to view more details")
+		fmt.Println("Error : " + msg + "; Use --debug flag to view more details")
+		os.Exit(1)
 	}
 }
 
@@ -79,5 +81,6 @@ func (c *Cli) handleErrorBody(body io.ReadCloser, msg string) {
 		c.handleError(err)
 		fmt.Println("Body: " + string(b))
 	}
-	panic("Error : " + msg + "; Use --debug flag to view more details")
+	fmt.Println("Error : " + msg + "; Use --debug flag to view more details")
+	os.Exit(1)
 }

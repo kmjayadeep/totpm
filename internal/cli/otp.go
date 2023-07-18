@@ -11,10 +11,10 @@ import (
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/kmjayadeep/totpm/internal/totp"
 	"github.com/kmjayadeep/totpm/pkg/configfile"
 	"github.com/kmjayadeep/totpm/pkg/data"
 	"github.com/kmjayadeep/totpm/pkg/types"
-	"github.com/pquerna/otp/totp"
 )
 
 func (c *Cli) listOtps() {
@@ -49,6 +49,10 @@ func (c *Cli) addOtp(uri, name, secret *string) {
 			Message: "Secret",
 		}
 		survey.AskOne(prompt, secret, survey.WithValidator(survey.Required))
+	}
+
+	if err := totp.ValidateSecretFormat(*secret); err != nil {
+		c.handleErrorMsg(err, "Invalid totp secret")
 	}
 
 	in := types.OtpInput{
@@ -132,7 +136,7 @@ func (c *Cli) getCode(site *string) {
 		c.handleError(fmt.Errorf("Unable to get OTP"))
 	}
 
-	code, err := totp.GenerateCode(otp.Secret, time.Now())
+	code, _, err := totp.GenerateCode(otp.Secret, time.Now())
 	c.handleError(err)
 
 	fmt.Println(code)
