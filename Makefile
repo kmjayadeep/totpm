@@ -24,7 +24,6 @@ clean:
 	go clean
 	rm ./bin/server
 
-
 # Cli commands
 run-cli:
 	@go run cmd/cli/cli.go

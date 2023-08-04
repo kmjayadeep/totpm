@@ -9,6 +9,7 @@ import (
 	"github.com/kmjayadeep/totpm/pkg/data"
 	"github.com/kmjayadeep/totpm/pkg/handler"
 	apihandler "github.com/kmjayadeep/totpm/pkg/handler/api"
+	render "github.com/kmjayadeep/totpm/pkg/handler/render"
 	supa "github.com/nedpals/supabase-go"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -33,6 +34,7 @@ func main() {
 
 	h := handler.NewHandler(db, supabase)
 	api := apihandler.NewAPI(db)
+	r := render.NewHandler(db)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("index", fiber.Map{})
@@ -41,7 +43,7 @@ func main() {
 	app.Static("/assets", "./assets/dist")
 
 	// Render pages
-	app.Get("/home", h.RenderSites)
+	app.Get("/home", r.RenderAccounts)
 	app.Get("/home/:id", h.RenderSite)
 
 	// APIs
