@@ -8,6 +8,7 @@ import (
 	"github.com/kmjayadeep/totpm/internal/config"
 	"github.com/kmjayadeep/totpm/pkg/data"
 	"github.com/kmjayadeep/totpm/pkg/handler"
+	apihandler "github.com/kmjayadeep/totpm/pkg/handler/api"
 	supa "github.com/nedpals/supabase-go"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -27,10 +28,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	db.AutoMigrate(&data.Site{})
+	db.AutoMigrate(&data.Site{}, &data.Account{})
 	supabase := supa.CreateClient(config.Get().SupabaseURL, config.Get().SupabaseKey)
 
 	h := handler.NewHandler(db, supabase)
+	api := apihandler.NewAPI(db)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("index", fiber.Map{})
@@ -50,6 +52,11 @@ func main() {
 	app.Get("/api/site/:id", h.RequiresAuth, h.GetSite)
 	app.Delete("/api/site/:id", h.RequiresAuth, h.DeleteSite)
 	app.Post("/api/site", h.RequiresAuth, h.AddSite)
+
+	// APIS compatible with 2fauth
+	app.Get("/api/v1/twofaccounts", api.GetAccounts)
+	app.Post("/api/v1/twofaccounts", api.AddAccount)
+	app.Delete("/api/v1/twofaccounts", api.DeleteAccounts)
 
 	log.Fatal(app.Listen(":3000"))
 }
