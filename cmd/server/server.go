@@ -58,5 +58,7 @@ func main() {
 	app.Post("/api/v1/twofaccounts", api.AddAccount)
 	app.Delete("/api/v1/twofaccounts", api.DeleteAccounts)
 
+	app.Get("/api/v1/twofaccounts/:id/otp", api.GetAccountOTP)
+
 	log.Fatal(app.Listen(":3000"))
 }

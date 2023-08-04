@@ -8,7 +8,7 @@ type Account struct {
 	OtpType   string `json:"otp_type"`
 	Digits    int    `json:"digits"`
 	Algorithm string `json:"algorithm"`
-	Period    int    `json:"period"`
-	Counter   int    `json:"counter"`
+	Period    uint   `json:"period"`
+	Counter   uint64 `json:"counter"`
 	Secret    string `json:"secret"`
 }

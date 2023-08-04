@@ -23,7 +23,17 @@ func (h *Api) AddAccount(c *fiber.Ctx) error {
 		return err
 	}
 
-	acc := data.Account{}
+	acc := data.Account{
+		Service:   req.Service,
+		Account:   req.Account,
+		Icon:      req.Icon,
+		OtpType:   req.OtpType,
+		Digits:    req.Digits,
+		Algorithm: req.Algorithm,
+		Period:    req.Period,
+		Counter:   req.Counter,
+		Secret:    req.Secret,
+	}
 
 	if res := h.db.Create(&acc); res.Error != nil {
 		return res.Error

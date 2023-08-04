@@ -11,8 +11,8 @@ type Account struct {
 	OtpType   string
 	Digits    int
 	Algorithm string
-	Period    int
-	Counter   int
+	Period    uint
+	Counter   uint64
 
 	Secret string
 }
