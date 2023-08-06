@@ -11,6 +11,21 @@
     <div class="container mx-auto">
       {{ template "partials/head" }}
       <div class="mt-16">
+        <div class="mt-[10vh]">
+          {{if .error}}
+          <div class="max-w-[25rem] mx-auto my-4 text-center">
+            <div class="bg-amber-100 border-t border-b border-amber-500 text-amber-700 px-4 py-3" role="alert">
+              <p class="font-bold">{{ .error }}</p>
+            </div>
+          </div>
+          {{end}}
+          {{if .message}}
+          <div class="max-w-[25rem] mx-auto my-4 text-center">
+            <div class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3" role="alert">
+              <p class="font-bold">{{ .message }}</p>
+            </div>
+          </div>
+          {{end}}
       {{embed}}
       </div>
     </div>

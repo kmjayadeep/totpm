@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -31,7 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	db.AutoMigrate(&data.Site{}, &data.Account{})
+	db.AutoMigrate(&data.Site{}, &data.Account{}, &data.User{})
 	supabase := supa.CreateClient(config.Get().SupabaseURL, config.Get().SupabaseKey)
 
 	store := session.New()
@@ -48,12 +47,22 @@ func main() {
 
 		user := sess.Get("user")
 
-		fmt.Println(sess.Keys())
-
 		if user == nil {
 			return c.Redirect("/login")
 		}
 		return c.Redirect("/accounts")
+	})
+	app.Get("/logout", func(c *fiber.Ctx) error {
+		sess, err := store.Get(c)
+		if err != nil {
+			return err
+		}
+
+		if err := sess.Destroy(); err != nil {
+			return err
+		}
+
+		return c.Redirect("/login")
 	})
 
 	app.Static("/assets", "./assets/dist")
@@ -61,8 +70,9 @@ func main() {
 	// Render pages
 	app.Get("/accounts", r.RenderAccounts)
 	app.Get("/login", r.RenderLogin)
-	app.Post("/login", r.RenderLoginSubmit)
+	app.Post("/login", r.RenderLogin)
 	app.Get("/register", r.RenderRegister)
+	app.Post("/register", r.RenderRegister)
 	app.Get("/home/:id", h.RenderSite)
 
 	// APIs
