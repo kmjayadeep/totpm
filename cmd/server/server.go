@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/html/v2"
 	"github.com/kmjayadeep/totpm/internal/config"
 	"github.com/kmjayadeep/totpm/pkg/data"
@@ -32,18 +34,35 @@ func main() {
 	db.AutoMigrate(&data.Site{}, &data.Account{})
 	supabase := supa.CreateClient(config.Get().SupabaseURL, config.Get().SupabaseKey)
 
+	store := session.New()
+
 	h := handler.NewHandler(db, supabase)
 	api := apihandler.NewAPI(db)
-	r := render.NewHandler(db)
+	r := render.NewHandler(db, store)
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("index", fiber.Map{})
+		sess, err := store.Get(c)
+		if err != nil {
+			return err
+		}
+
+		user := sess.Get("user")
+
+		fmt.Println(sess.Keys())
+
+		if user == nil {
+			return c.Redirect("/login")
+		}
+		return c.Redirect("/accounts")
 	})
 
 	app.Static("/assets", "./assets/dist")
 
 	// Render pages
-	app.Get("/home", r.RenderAccounts)
+	app.Get("/accounts", r.RenderAccounts)
+	app.Get("/login", r.RenderLogin)
+	app.Post("/login", r.RenderLoginSubmit)
+	app.Get("/register", r.RenderRegister)
 	app.Get("/home/:id", h.RenderSite)
 
 	// APIs

@@ -1,13 +1,18 @@
 package render
 
-import "gorm.io/gorm"
+import (
+	"github.com/gofiber/fiber/v2/middleware/session"
+	"gorm.io/gorm"
+)
 
 type Render struct {
-	db *gorm.DB
+	db    *gorm.DB
+	store *session.Store
 }
 
-func NewHandler(db *gorm.DB) *Render {
+func NewHandler(db *gorm.DB, s *session.Store) *Render {
 	return &Render{
-		db: db,
+		db:    db,
+		store: s,
 	}
 }

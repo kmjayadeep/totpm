@@ -11,7 +11,7 @@ func (h *Render) RenderAccounts(c *fiber.Ctx) error {
 		return res.Error
 	}
 
-	return c.Render("home", fiber.Map{
+	return c.Render("accounts", fiber.Map{
 		"accounts": accs,
 	})
 }
