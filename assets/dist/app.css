@@ -678,6 +678,10 @@ video {
   max-width: 280px;
 }
 
+.max-w-\[30rem\] {
+  max-width: 30rem;
+}
+
 .max-w-screen-md {
   max-width: 768px;
 }

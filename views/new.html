@@ -1,4 +1,33 @@
+<div class="max-w-[30rem] mx-auto">
+  <div class="flex flex-col items-center">
+    <h2 class="mb-5 text-gray-900 font-mono font-bold text-xl">Add new Token</h2>
+    <form action="/new" method="post" class="w-full">
+      <div>
+        <label for="service" class="font-bold">Service</label>
+        <input id="service" name="service" type="text" class="mt-2 w-full px-6 py-3 mb-4 border border-slate-600 rounded-lg font-medium " placeholder="Eg: Google" value=""/>
+      </div>
 
-<form>
+      <div>
+        <label for="account" class="font-bold">Account</label>
+        <input id="account" name="account" type="text" class="mt-2 w-full px-6 py-3 mb-4 border border-slate-600 rounded-lg font-medium " placeholder="Eg: John Doe" value=""/>
+      </div>
 
-</form>
+      <div>
+        <label for="secret" class="font-bold">Secret</label>
+        <input id="secret" name="secret" type="text" class="mt-2 w-full px-6 py-3 mb-4 border border-slate-600 rounded-lg font-medium " />
+      </div>
+
+      <div>
+        <label for="type" class="font-bold">Otp Type</label>
+        <input id="type" name="otpType" type="text" class="mt-2 w-full px-6 py-3 mb-4 border border-slate-600 rounded-lg font-medium " value="totp"/>
+      </div>
+
+      <div>
+        <label for="digits" class="font-bold">Digits</label>
+        <input id="digits" name="digits" type="number" class="mt-2 w-full px-6 py-3 mb-4 border border-slate-600 rounded-lg font-medium " value="6"/>
+      </div>
+
+      <button type="submit" class="bg-slate-500 hover:bg-slate-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px]">Create</button>
+    </form>
+  </div>
+</div>

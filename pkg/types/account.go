@@ -6,7 +6,7 @@ type Account struct {
 	Account   string `json:"account"`
 	Icon      string `json:"icon"`
 	OtpType   string `json:"otp_type"`
-	Digits    int    `json:"digits"`
+	Digits    uint   `json:"digits"`
 	Algorithm string `json:"algorithm"`
 	Period    uint   `json:"period"`
 	Counter   uint64 `json:"counter"`

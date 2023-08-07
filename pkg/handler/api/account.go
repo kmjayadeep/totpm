@@ -27,7 +27,7 @@ func (h *Api) AddAccount(c *fiber.Ctx) error {
 		Service:   req.Service,
 		Account:   req.Account,
 		Icon:      req.Icon,
-		OtpType:   req.OtpType,
+		OtpType:   data.OtpType(req.OtpType),
 		Digits:    req.Digits,
 		Algorithm: req.Algorithm,
 		Period:    req.Period,

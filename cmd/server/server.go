@@ -69,10 +69,16 @@ func main() {
 
 	// Render pages
 	app.Get("/accounts", r.RenderAccounts)
+
+	app.Get("/new", r.RenderNewAccount)
+	app.Post("/new", r.RenderNewAccount)
+
 	app.Get("/login", r.RenderLogin)
 	app.Post("/login", r.RenderLogin)
+
 	app.Get("/register", r.RenderRegister)
 	app.Post("/register", r.RenderRegister)
+
 	app.Get("/home/:id", h.RenderSite)
 
 	// APIs
