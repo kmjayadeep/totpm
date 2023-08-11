@@ -86,7 +86,7 @@ func (h *Render) RenderLogin(c *fiber.Ctx) error {
 	user := &data.User{}
 
 	if res := h.db.Where("email=?", l.Email).First(user); res.Error != nil {
-		return res.Error
+		return h.RenderError(c, "login", http.StatusUnauthorized, "Invalid login credentials")
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(l.Password)); err != nil {

@@ -11,7 +11,7 @@ const (
 
 type Account struct {
 	gorm.Model
-	UserID    string
+	UserID    uint
 	Service   string
 	Account   string
 	Icon      string

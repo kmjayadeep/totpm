@@ -16,6 +16,11 @@ type NewAccountRequest struct {
 }
 
 func (h *Render) RenderNewAccount(c *fiber.Ctx) error {
+	user, err := h.GetLoggedInUser(c)
+	if err != nil {
+		return err
+	}
+
 	if c.Method() == http.MethodGet {
 		return c.Render("new", fiber.Map{})
 	}
@@ -32,6 +37,7 @@ func (h *Render) RenderNewAccount(c *fiber.Ctx) error {
 		Secret:  a.Secret,
 		OtpType: data.OtpType(a.OtpType),
 		Digits:  a.Digits,
+		UserID:  user.ID,
 	}
 
 	if res := h.db.Create(acc); res.Error != nil {
@@ -42,8 +48,13 @@ func (h *Render) RenderNewAccount(c *fiber.Ctx) error {
 }
 
 func (h *Render) RenderAccounts(c *fiber.Ctx) error {
+	user, err := h.GetLoggedInUser(c)
+	if err != nil {
+		return err
+	}
+
 	accs := []data.Account{}
-	if res := h.db.Find(&accs); res.Error != nil {
+	if res := h.db.Where("user_id=?", user.ID).Find(&accs); res.Error != nil {
 		return res.Error
 	}
 
