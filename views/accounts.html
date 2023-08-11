@@ -1,9 +1,14 @@
-<div class="grid grid-cols-2 md:lg:xl:grid-cols-3 group bg-white">
+<div class="grid grid-cols-2 md:lg:xl:grid-cols-3 bg-white">
   {{ range .accounts}}
-  <div class="p-10 flex flex-col items-center text-center group md:lg:xl:border-r md:lg:xl:border-b hover:bg-slate-50 m-4">
-    <span class="p-5 rounded-full shadow-lg shadow-black-200 w-24 h-24">
+  <div class="p-1 flex group flex-col items-center text-center group md:lg:xl:border-r md:lg:xl:border-b hover:bg-slate-50 m-4 relative">
 
-      <!-- <img src="/assets/images/amazon.png"/> -->
+    <div class="group-hover:visible invisible absolute w-full p-2 text-right">
+      <a href="/accounts/edit/{{ .ID }}" class="bg-blue-600 rounded-full p-2 text-white">
+        <i class="fa fa-pencil"></i>
+      </a>
+    </div>
+
+    <span class="p-5 rounded-full shadow-lg shadow-black-200 w-24 h-24">
 
       <img src="{{ .Icon | url }}" />
 
