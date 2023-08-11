@@ -32,8 +32,9 @@ func (h *Api) AddAccount(c *fiber.Ctx) error {
 		Algorithm: req.Algorithm,
 		Period:    req.Period,
 		Counter:   req.Counter,
-		Secret:    req.Secret,
 	}
+
+	acc.SetSecret(req.Secret)
 
 	if res := h.db.Create(&acc); res.Error != nil {
 		return res.Error

@@ -1,6 +1,7 @@
 package render
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -34,10 +35,15 @@ func (h *Render) RenderNewAccount(c *fiber.Ctx) error {
 	acc := &data.Account{
 		Service: a.Service,
 		Account: a.Account,
-		Secret:  a.Secret,
 		OtpType: data.OtpType(a.OtpType),
 		Digits:  a.Digits,
 		UserID:  user.ID,
+	}
+
+	err = acc.SetSecret(a.Secret)
+	if err != nil {
+		log.Println(err)
+		return h.RenderError(c, "new", http.StatusInternalServerError, "Unable to add the account")
 	}
 
 	if res := h.db.Create(acc); res.Error != nil {

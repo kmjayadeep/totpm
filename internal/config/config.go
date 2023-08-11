@@ -11,6 +11,7 @@ type Cfg struct {
 	SupabaseURL        string
 	SupabaseKey        string
 	JWTSecret          string
+	AppKey             string
 }
 
 func Get() Cfg {
@@ -19,5 +20,6 @@ func Get() Cfg {
 		SupabaseURL:        os.Getenv("SUPABASE_URL"),
 		SupabaseKey:        os.Getenv("SUPABASE_KEY"),
 		JWTSecret:          os.Getenv("JWT_SECRET"),
+		AppKey:             os.Getenv("APP_KEY"),
 	}
 }

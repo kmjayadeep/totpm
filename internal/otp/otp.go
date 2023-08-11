@@ -27,8 +27,13 @@ func algorithm(algo string) otp.Algorithm {
 
 // TODO return expire date
 func GenerateCode(a data.Account) (string, error) {
+	sec, err := a.GetSecret()
+	if err != nil {
+		return "", err
+	}
+
 	if a.OtpType == data.OtpTypeTOTP {
-		return totp.GenerateCodeCustom(a.Secret, time.Now(), totp.ValidateOpts{
+		return totp.GenerateCodeCustom(sec, time.Now(), totp.ValidateOpts{
 			Period:    a.Period,
 			Digits:    otp.Digits(a.Digits),
 			Algorithm: algorithm(a.Algorithm),
@@ -36,7 +41,7 @@ func GenerateCode(a data.Account) (string, error) {
 	}
 
 	if a.OtpType == data.OtpTypeHOTP {
-		return hotp.GenerateCodeCustom(a.Secret, a.Counter, hotp.ValidateOpts{
+		return hotp.GenerateCodeCustom(sec, a.Counter, hotp.ValidateOpts{
 			Digits:    otp.Digits(a.Digits),
 			Algorithm: algorithm(a.Algorithm),
 		})
