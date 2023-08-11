@@ -3,7 +3,9 @@
   <div class="p-10 flex flex-col items-center text-center group md:lg:xl:border-r md:lg:xl:border-b hover:bg-slate-50 m-4">
     <span class="p-5 rounded-full shadow-lg shadow-black-200 w-24 h-24">
 
-      <img src="/assets/images/amazon.png"/>
+      <!-- <img src="/assets/images/amazon.png"/> -->
+
+      <img src="{{ .Icon | url }}" />
 
     </span>
     <p class="text-xl font-medium text-slate-700 mt-3">{{ .Service }}</p>

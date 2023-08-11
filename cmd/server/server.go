@@ -1,6 +1,7 @@
 package main
 
 import (
+	"html/template"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -20,6 +21,14 @@ import (
 
 func main() {
 	engine := html.New("./views", ".html")
+	engine.AddFuncMap(map[string]interface{}{
+		"unescape": func(s string) template.HTML {
+			return template.HTML(s)
+		},
+		"url": func(s string) template.URL {
+			return template.URL(s)
+		},
+	})
 	app := fiber.New(fiber.Config{
 		Views:       engine,
 		ViewsLayout: "layouts/main",

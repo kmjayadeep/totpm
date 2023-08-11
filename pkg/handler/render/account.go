@@ -12,6 +12,7 @@ type NewAccountRequest struct {
 	Service string `form:"service"`
 	Account string `form:"account"`
 	Secret  string `form:"secret"`
+	Icon    string `form:"icon"`
 	OtpType string `form:"otpType"`
 	Digits  uint   `form:"digits"`
 }
@@ -38,6 +39,7 @@ func (h *Render) RenderNewAccount(c *fiber.Ctx) error {
 		OtpType: data.OtpType(a.OtpType),
 		Digits:  a.Digits,
 		UserID:  user.ID,
+		Icon:    a.Icon,
 	}
 
 	err = acc.SetSecret(a.Secret)

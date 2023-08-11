@@ -23,6 +23,12 @@
       </div>
 
       <div>
+        <label for="icon" class="font-bold">Icon</label>
+        <input id="icon" type="file" accept="image/*" class="mt-2 w-full px-6 py-3 mb-4 border border-slate-600 rounded-lg font-medium " value=""/>
+        <input id="iconbase64" type="text" hidden class="mt-2 w-full px-6 py-3 mb-4 border border-slate-600 rounded-lg font-medium" name="icon" value=""/>
+      </div>
+
+      <div>
         <label for="digits" class="font-bold">Digits</label>
         <input id="digits" name="digits" type="number" class="mt-2 w-full px-6 py-3 mb-4 border border-slate-600 rounded-lg font-medium " value="6"/>
       </div>
@@ -31,3 +37,17 @@
     </form>
   </div>
 </div>
+
+<script>
+  document.getElementById('icon').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = function() {
+      const base64 = reader.result;
+      document.getElementById('iconbase64').value = base64;
+    };
+
+    reader.readAsDataURL(file);
+  });
+</script>
