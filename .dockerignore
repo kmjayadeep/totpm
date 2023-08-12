@@ -1,0 +1,6 @@
+.git
+Dockerfile
+config.yaml
+.env
+*.sqlite3
+bin/

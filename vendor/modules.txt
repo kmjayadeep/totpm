@@ -1,0 +1,186 @@
+# github.com/AlecAivazis/survey/v2 v2.3.7
+## explicit; go 1.13
+github.com/AlecAivazis/survey/v2
+github.com/AlecAivazis/survey/v2/core
+github.com/AlecAivazis/survey/v2/terminal
+# github.com/TwiN/go-color v1.4.0
+## explicit; go 1.19
+github.com/TwiN/go-color
+# github.com/alecthomas/kingpin/v2 v2.3.2
+## explicit; go 1.17
+github.com/alecthomas/kingpin/v2
+# github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137
+## explicit; go 1.15
+github.com/alecthomas/units
+# github.com/andybalholm/brotli v1.0.5
+## explicit; go 1.12
+github.com/andybalholm/brotli
+# github.com/boombuler/barcode v1.0.1-0.20190219062509-6c824513bacc
+## explicit
+github.com/boombuler/barcode
+github.com/boombuler/barcode/qr
+github.com/boombuler/barcode/utils
+# github.com/gofiber/fiber/v2 v2.47.0
+## explicit; go 1.20
+github.com/gofiber/fiber/v2
+github.com/gofiber/fiber/v2/internal/schema
+github.com/gofiber/fiber/v2/internal/storage/memory
+github.com/gofiber/fiber/v2/middleware/session
+github.com/gofiber/fiber/v2/utils
+# github.com/gofiber/storage/sqlite3 v1.3.8
+## explicit; go 1.17
+github.com/gofiber/storage/sqlite3
+# github.com/gofiber/template v1.8.2
+## explicit; go 1.20
+github.com/gofiber/template
+# github.com/gofiber/template/html/v2 v2.0.5
+## explicit; go 1.20
+github.com/gofiber/template/html/v2
+# github.com/gofiber/utils v1.1.0
+## explicit; go 1.17
+github.com/gofiber/utils
+# github.com/google/go-querystring v1.1.0
+## explicit; go 1.10
+github.com/google/go-querystring/query
+# github.com/google/uuid v1.3.0
+## explicit
+github.com/google/uuid
+# github.com/jackc/pgpassfile v1.0.0
+## explicit; go 1.12
+github.com/jackc/pgpassfile
+# github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a
+## explicit; go 1.14
+github.com/jackc/pgservicefile
+# github.com/jackc/pgx/v5 v5.3.1
+## explicit; go 1.19
+github.com/jackc/pgx/v5
+github.com/jackc/pgx/v5/internal/anynil
+github.com/jackc/pgx/v5/internal/iobufpool
+github.com/jackc/pgx/v5/internal/nbconn
+github.com/jackc/pgx/v5/internal/pgio
+github.com/jackc/pgx/v5/internal/sanitize
+github.com/jackc/pgx/v5/internal/stmtcache
+github.com/jackc/pgx/v5/pgconn
+github.com/jackc/pgx/v5/pgconn/internal/ctxwatch
+github.com/jackc/pgx/v5/pgproto3
+github.com/jackc/pgx/v5/pgtype
+github.com/jackc/pgx/v5/stdlib
+# github.com/jinzhu/inflection v1.0.0
+## explicit
+github.com/jinzhu/inflection
+# github.com/jinzhu/now v1.1.5
+## explicit; go 1.12
+github.com/jinzhu/now
+# github.com/joho/godotenv v1.5.1
+## explicit; go 1.12
+github.com/joho/godotenv
+github.com/joho/godotenv/autoload
+# github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
+## explicit
+github.com/kballard/go-shellquote
+# github.com/klauspost/compress v1.16.3
+## explicit; go 1.18
+github.com/klauspost/compress/flate
+github.com/klauspost/compress/gzip
+github.com/klauspost/compress/zlib
+# github.com/mattn/go-colorable v0.1.13
+## explicit; go 1.15
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.19
+## explicit; go 1.15
+github.com/mattn/go-isatty
+# github.com/mattn/go-runewidth v0.0.14
+## explicit; go 1.9
+github.com/mattn/go-runewidth
+# github.com/mattn/go-sqlite3 v1.14.17
+## explicit; go 1.16
+github.com/mattn/go-sqlite3
+# github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b
+## explicit
+github.com/mgutz/ansi
+# github.com/nedpals/postgrest-go v0.1.3
+## explicit; go 1.16
+github.com/nedpals/postgrest-go/pkg
+# github.com/nedpals/supabase-go v0.3.0
+## explicit; go 1.16
+github.com/nedpals/supabase-go
+# github.com/philhofer/fwd v1.1.2
+## explicit; go 1.15
+github.com/philhofer/fwd
+# github.com/pquerna/otp v1.4.0
+## explicit; go 1.12
+github.com/pquerna/otp
+github.com/pquerna/otp/hotp
+github.com/pquerna/otp/internal
+github.com/pquerna/otp/totp
+# github.com/rivo/uniseg v0.2.0
+## explicit; go 1.12
+github.com/rivo/uniseg
+# github.com/savsgio/dictpool v0.0.0-20221023140959-7bf2e61cea94
+## explicit; go 1.13
+github.com/savsgio/dictpool
+# github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee
+## explicit; go 1.20
+github.com/savsgio/gotils/strconv
+# github.com/tinylib/msgp v1.1.8
+## explicit; go 1.15
+github.com/tinylib/msgp/msgp
+# github.com/valyala/bytebufferpool v1.0.0
+## explicit
+github.com/valyala/bytebufferpool
+# github.com/valyala/fasthttp v1.47.0
+## explicit; go 1.20
+github.com/valyala/fasthttp
+github.com/valyala/fasthttp/fasthttputil
+github.com/valyala/fasthttp/reuseport
+github.com/valyala/fasthttp/stackless
+# github.com/valyala/tcplisten v1.0.0
+## explicit; go 1.12
+github.com/valyala/tcplisten
+# github.com/xhit/go-str2duration/v2 v2.1.0
+## explicit; go 1.13
+github.com/xhit/go-str2duration/v2
+# github.com/xlzd/gotp v0.1.0
+## explicit; go 1.17
+github.com/xlzd/gotp
+# golang.org/x/crypto v0.8.0
+## explicit; go 1.17
+golang.org/x/crypto/bcrypt
+golang.org/x/crypto/blowfish
+golang.org/x/crypto/pbkdf2
+# golang.org/x/sys v0.9.0
+## explicit; go 1.17
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/plan9
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# golang.org/x/term v0.7.0
+## explicit; go 1.17
+golang.org/x/term
+# golang.org/x/text v0.9.0
+## explicit; go 1.17
+golang.org/x/text/cases
+golang.org/x/text/internal
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+golang.org/x/text/runes
+golang.org/x/text/secure/bidirule
+golang.org/x/text/secure/precis
+golang.org/x/text/transform
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
+golang.org/x/text/width
+# gorm.io/driver/postgres v1.5.2
+## explicit; go 1.18
+gorm.io/driver/postgres
+# gorm.io/gorm v1.25.2
+## explicit; go 1.16
+gorm.io/gorm
+gorm.io/gorm/callbacks
+gorm.io/gorm/clause
+gorm.io/gorm/logger
+gorm.io/gorm/migrator
+gorm.io/gorm/schema
+gorm.io/gorm/utils
