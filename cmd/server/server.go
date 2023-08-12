@@ -6,7 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
-	storage "github.com/gofiber/storage/postgres"
+	"github.com/gofiber/storage/sqlite3"
 	"github.com/gofiber/template/html/v2"
 	"github.com/kmjayadeep/totpm/internal/config"
 	"github.com/kmjayadeep/totpm/pkg/data"
@@ -40,13 +40,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	db.AutoMigrate(&data.Site{}, &data.Account{}, &data.User{})
+	if config.Get().EnableDbMigration {
+		db.AutoMigrate(&data.Site{}, &data.Account{}, &data.User{})
+	}
 	supabase := supa.CreateClient(config.Get().SupabaseURL, config.Get().SupabaseKey)
 
+	storage := sqlite3.New()
 	store := session.New(session.Config{
-		Storage: storage.New(storage.Config{
-			ConnectionURI: config.Get().DBConnectionString,
-		}),
+		Storage: storage,
 	})
 
 	h := handler.NewHandler(db, supabase)
@@ -86,6 +87,9 @@ func main() {
 
 	app.Get("/new", r.RequireAuth, r.RenderNewAccount)
 	app.Post("/new", r.RenderNewAccount)
+
+	app.Get("/accounts/edit/:id", r.RequireAuth, r.RenderEditAccount)
+	app.Post("/accounts/edit/:id", r.RenderEditAccount)
 
 	app.Get("/login", r.RenderLogin)
 	app.Post("/login", r.RenderLogin)

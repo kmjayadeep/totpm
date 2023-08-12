@@ -5,28 +5,30 @@
     OtpCloud
   </a>
 
-  <div class="mx-4 flex">
-    <a href="/new"
-        class="w-12 h-12 border border-gray-200 rounded-full px-4 py-2 m-1 transition duration-500 ease select-none text-white bg-blue-600 hover:bg-blue-300 focus:outline-none focus:shadow-outline
-               flex justify-center items-center
-        "
-        >
-        <i class="fa-solid fa-plus"></i>
-    </a>
-    <a href="/settings"
-        class="w-12 h-12 border border-gray-200 text-gray-700 rounded-full px-4 py-2 m-1 transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline
-               flex justify-center items-center
-        "
-        >
-        <i class="fa-solid fa-gear"></i>
-    </a>
-    <a href="/logout"
-        class="w-12 h-12 border border-gray-200 rounded-full px-4 py-2 m-1 transition duration-500 ease select-none text-white bg-red-400 hover:bg-red-200 focus:outline-none focus:shadow-outline
-               flex justify-center items-center
-        "
-        >
-        <i class="fa-solid fa-power-off"></i>
-    </a>
-  </div>
+  {{ if .ID  }}
+    <div class="mx-4 flex">
+      <a href="/new"
+          class="w-12 h-12 border border-gray-200 rounded-full px-4 py-2 m-1 transition duration-500 ease select-none text-white bg-blue-600 hover:bg-blue-300 focus:outline-none focus:shadow-outline
+                 flex justify-center items-center
+          "
+          >
+          <i class="fa-solid fa-plus"></i>
+      </a>
+      <a href="/settings"
+          class="w-12 h-12 border border-gray-200 text-gray-700 rounded-full px-4 py-2 m-1 transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline
+                 flex justify-center items-center
+          "
+          >
+          <i class="fa-solid fa-gear"></i>
+      </a>
+      <a href="/logout"
+          class="w-12 h-12 border border-gray-200 rounded-full px-4 py-2 m-1 transition duration-500 ease select-none text-white bg-red-400 hover:bg-red-200 focus:outline-none focus:shadow-outline
+                 flex justify-center items-center
+          "
+          >
+          <i class="fa-solid fa-power-off"></i>
+      </a>
+    </div>
+  {{ end }}
 
 </nav>

@@ -12,6 +12,7 @@ type Cfg struct {
 	SupabaseKey        string
 	JWTSecret          string
 	AppKey             string
+	EnableDbMigration  bool
 }
 
 func Get() Cfg {
@@ -21,5 +22,6 @@ func Get() Cfg {
 		SupabaseKey:        os.Getenv("SUPABASE_KEY"),
 		JWTSecret:          os.Getenv("JWT_SECRET"),
 		AppKey:             os.Getenv("APP_KEY"),
+		EnableDbMigration:  os.Getenv("ENABLE_DB_MIGRATION") == "true",
 	}
 }

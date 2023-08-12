@@ -20,3 +20,6 @@ go.work
 
 # Env file
 *.env
+
+# Session file
+*.sqlite3

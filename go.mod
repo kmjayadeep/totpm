@@ -7,7 +7,7 @@ require (
 	github.com/TwiN/go-color v1.4.0
 	github.com/alecthomas/kingpin/v2 v2.3.2
 	github.com/gofiber/fiber/v2 v2.47.0
-	github.com/gofiber/storage/postgres v1.3.4
+	github.com/gofiber/storage/sqlite3 v1.3.8
 	github.com/gofiber/template/html/v2 v2.0.5
 	github.com/joho/godotenv v1.5.1
 	github.com/nedpals/supabase-go v0.3.0
@@ -33,10 +33,10 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/klauspost/compress v1.16.3 // indirect
-	github.com/lib/pq v1.10.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
+	github.com/mattn/go-sqlite3 v1.14.17 // indirect
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
 	github.com/nedpals/postgrest-go v0.1.3 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
