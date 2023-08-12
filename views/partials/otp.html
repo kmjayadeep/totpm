@@ -1,0 +1,8 @@
+<button onclick="navigator.clipboard.writeText('{{ .Otp }}')" class="mr-2 bg-slate-200 hover:bg-slate-300 rounded-lg py-2.5 px-5 transition-colors w-full">
+  {{ .Otp }}
+
+  <i class="ml-2 fa fa-copy"></i>
+</button>
+<button class="mr-2 bg-slate-500 hover:bg-slate-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-16" hx-get="/accounts/{{ .ID }}/otp" hx-trigger="click" hx-target="closest .otp">
+  <i class="fa fa-refresh"></i>
+</button>

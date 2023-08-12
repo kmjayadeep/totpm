@@ -38,7 +38,7 @@
 
       <div class="flex">
         <button type="submit" class="mr-2 bg-slate-500 hover:bg-slate-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px]">Update</button>
-        <button hx-delete hx-confirm="Are you sure?" class="ml-2 bg-red-400 hover:bg-red-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px]">Delete</button>
+        <button hx-delete="/accounts/{{ .account.ID }}" hx-confirm="Are you sure?" class="ml-2 bg-red-400 hover:bg-red-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px]">Delete</button>
       </div>
     </form>
   </div>

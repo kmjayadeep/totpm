@@ -91,6 +91,8 @@ func main() {
 	app.Get("/accounts/edit/:id", r.RequireAuth, r.RenderEditAccount)
 	app.Post("/accounts/edit/:id", r.RenderEditAccount)
 
+	app.Get("/accounts/:id/otp", r.RenderOtp)
+
 	app.Get("/login", r.RenderLogin)
 	app.Post("/login", r.RenderLogin)
 
