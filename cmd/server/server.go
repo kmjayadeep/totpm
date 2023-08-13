@@ -30,8 +30,9 @@ func main() {
 		},
 	})
 	app := fiber.New(fiber.Config{
-		Views:       engine,
-		ViewsLayout: "layouts/main",
+		Views:             engine,
+		ViewsLayout:       "layouts/main",
+		PassLocalsToViews: true,
 	})
 
 	db, err := gorm.Open(postgres.Open(config.Get().DBConnectionString), &gorm.Config{

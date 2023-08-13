@@ -25,9 +25,7 @@ func (h *Render) RenderNewAccount(c *fiber.Ctx) error {
 	}
 
 	if c.Method() == http.MethodGet {
-		return c.Render("new", fiber.Map{
-			"user": user,
-		})
+		return c.Render("new", fiber.Map{})
 	}
 
 	a := AccountRequest{}
@@ -77,7 +75,6 @@ func (h *Render) RenderEditAccount(c *fiber.Ctx) error {
 
 	if c.Method() == http.MethodGet {
 		return c.Render("edit", fiber.Map{
-			"user":    user,
 			"account": acc,
 			"secret":  secret,
 		})
@@ -124,7 +121,6 @@ func (h *Render) RenderAccounts(c *fiber.Ctx) error {
 	})
 
 	return c.Render("accounts", fiber.Map{
-		"user":     user,
 		"accounts": accs,
 	})
 }

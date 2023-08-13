@@ -22,6 +22,14 @@ func NewHandler(db *gorm.DB, s *session.Store) *Render {
 }
 
 func (h *Render) GetLoggedInUser(c *fiber.Ctx) (*data.User, error) {
+	if user, ok := c.Locals("user").(*data.User); ok {
+		return user, nil
+	}
+
+	return nil, fmt.Errorf("Invalid data in the session")
+}
+
+func (h *Render) GetUserFromSession(c *fiber.Ctx) (*data.User, error) {
 	sess, err := h.store.Get(c)
 	if err != nil {
 		return nil, err
@@ -34,7 +42,7 @@ func (h *Render) GetLoggedInUser(c *fiber.Ctx) (*data.User, error) {
 }
 
 func (h *Render) RequireAuth(c *fiber.Ctx) error {
-	u, err := h.GetLoggedInUser(c)
+	u, err := h.GetUserFromSession(c)
 	if err != nil {
 		return c.Redirect("/login")
 	}
@@ -44,6 +52,8 @@ func (h *Render) RequireAuth(c *fiber.Ctx) error {
 	if res := h.db.First(&user, u.ID); res.Error != nil {
 		return c.Redirect("/login")
 	}
+
+	c.Locals("user", user)
 
 	return c.Next()
 }
