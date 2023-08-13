@@ -124,3 +124,24 @@ func (h *Render) RenderAccounts(c *fiber.Ctx) error {
 		"accounts": accs,
 	})
 }
+
+func (h *Render) RenderDeleteAccount(c *fiber.Ctx) error {
+	user, err := h.GetLoggedInUser(c)
+	if err != nil {
+		return err
+	}
+
+	id := c.Params("id")
+	acc := &data.Account{}
+	if res := h.db.Where("id=? and user_id=?", id, user.ID).First(acc); res.Error != nil {
+		return res.Error
+	}
+
+	if res := h.db.Delete(acc); res.Error != nil {
+		return res.Error
+	}
+
+	c.Append("HX-Redirect", "/accounts")
+
+	return c.SendStatus(http.StatusNoContent)
+}

@@ -87,12 +87,13 @@ func main() {
 	app.Get("/accounts", r.RequireAuth, r.RenderAccounts)
 
 	app.Get("/new", r.RequireAuth, r.RenderNewAccount)
-	app.Post("/new", r.RenderNewAccount)
+	app.Post("/new", r.RequireAuth, r.RenderNewAccount)
 
 	app.Get("/accounts/edit/:id", r.RequireAuth, r.RenderEditAccount)
 	app.Post("/accounts/edit/:id", r.RenderEditAccount)
+	app.Delete("/accounts/:id", r.RequireAuth, r.RenderDeleteAccount)
 
-	app.Get("/accounts/:id/otp", r.RenderOtp)
+	app.Get("/accounts/:id/otp", r.RequireAuth, r.RenderOtp)
 
 	app.Get("/login", r.RenderLogin)
 	app.Post("/login", r.RenderLogin)
