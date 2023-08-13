@@ -90,7 +90,7 @@ func main() {
 	app.Post("/new", r.RequireAuth, r.RenderNewAccount)
 
 	app.Get("/accounts/edit/:id", r.RequireAuth, r.RenderEditAccount)
-	app.Post("/accounts/edit/:id", r.RenderEditAccount)
+	app.Post("/accounts/edit/:id", r.RequireAuth, r.RenderEditAccount)
 	app.Delete("/accounts/:id", r.RequireAuth, r.RenderDeleteAccount)
 
 	app.Get("/accounts/:id/otp", r.RequireAuth, r.RenderOtp)
