@@ -2,7 +2,7 @@ version: '3'
 services:
   otpcloud:
     build: .
-    image: kmjayadeep/otpcloud:0.1
+    image: kmjayadeep/otpcloud:0.2
     ports:
     - "3000:3000"
     env_file: .env

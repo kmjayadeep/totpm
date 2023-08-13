@@ -11,7 +11,6 @@ import (
 	"github.com/kmjayadeep/totpm/internal/config"
 	"github.com/kmjayadeep/totpm/pkg/data"
 	"github.com/kmjayadeep/totpm/pkg/handler"
-	apihandler "github.com/kmjayadeep/totpm/pkg/handler/api"
 	render "github.com/kmjayadeep/totpm/pkg/handler/render"
 	supa "github.com/nedpals/supabase-go"
 	"gorm.io/driver/postgres"
@@ -52,7 +51,7 @@ func main() {
 	})
 
 	h := handler.NewHandler(db, supabase)
-	api := apihandler.NewAPI(db)
+	// api := apihandler.NewAPI(db)
 	r := render.NewHandler(db, store)
 
 	app.Get("/", func(c *fiber.Ctx) error {
@@ -101,8 +100,6 @@ func main() {
 	app.Get("/register", r.RenderRegister)
 	app.Post("/register", r.RenderRegister)
 
-	app.Get("/home/:id", h.RenderSite)
-
 	// APIs
 	app.Post("/api/auth/signup", h.Signup)
 	app.Post("/api/auth/login", h.Login)
@@ -113,11 +110,11 @@ func main() {
 	app.Post("/api/site", h.RequiresAuth, h.AddSite)
 
 	// APIS compatible with 2fauth
-	app.Get("/api/v1/twofaccounts", api.GetAccounts)
-	app.Post("/api/v1/twofaccounts", api.AddAccount)
-	app.Delete("/api/v1/twofaccounts", api.DeleteAccounts)
+	// app.Get("/api/v1/twofaccounts", api.GetAccounts)
+	// app.Post("/api/v1/twofaccounts", api.AddAccount)
+	// app.Delete("/api/v1/twofaccounts", api.DeleteAccounts)
 
-	app.Get("/api/v1/twofaccounts/:id/otp", api.GetAccountOTP)
+	// app.Get("/api/v1/twofaccounts/:id/otp", api.GetAccountOTP)
 
 	log.Fatal(app.Listen(":3000"))
 }
