@@ -6,14 +6,15 @@ import (
 	"sort"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/kmjayadeep/totpm/internal/s3"
 	"github.com/kmjayadeep/totpm/pkg/data"
+	"github.com/valyala/fasthttp"
 )
 
 type AccountRequest struct {
 	Service string `form:"service"`
 	Account string `form:"account"`
 	Secret  string `form:"secret"`
-	Icon    string `form:"icon"`
 	OtpType string `form:"otpType"`
 	Digits  uint   `form:"digits"`
 }
@@ -40,7 +41,29 @@ func (h *Render) RenderNewAccount(c *fiber.Ctx) error {
 		OtpType: data.OtpType(a.OtpType),
 		Digits:  a.Digits,
 		UserID:  user.ID,
-		Icon:    a.Icon,
+	}
+
+	file, err := c.FormFile("icon")
+	if err != nil && err != fasthttp.ErrMissingFile {
+		log.Println(err)
+		return h.RenderError(c, "new", http.StatusInternalServerError, "Unable to upload file")
+	}
+
+	// Upload icon
+	if err != fasthttp.ErrMissingFile {
+		f, err := file.Open()
+		if err != nil {
+			log.Println(err)
+			return h.RenderError(c, "new", http.StatusInternalServerError, "Unable to open uploaded file")
+		}
+
+		icon, err := s3.UploadIcon(f)
+		if err != nil {
+			log.Println(err)
+			return h.RenderError(c, "new", http.StatusInternalServerError, "Unable to save icon")
+		}
+
+		acc.Icon = icon
 	}
 
 	err = acc.SetSecret(a.Secret)
@@ -90,7 +113,29 @@ func (h *Render) RenderEditAccount(c *fiber.Ctx) error {
 	acc.Account = a.Account
 	acc.Digits = a.Digits
 	acc.OtpType = data.OtpType(a.OtpType)
-	acc.Icon = a.Icon
+
+	file, err := c.FormFile("icon")
+	if err != nil && err != fasthttp.ErrMissingFile {
+		log.Println(err)
+		return h.RenderError(c, "new", http.StatusInternalServerError, "Unable to upload file")
+	}
+
+	// Upload icon
+	if err != fasthttp.ErrMissingFile {
+		f, err := file.Open()
+		if err != nil {
+			log.Println(err)
+			return h.RenderError(c, "new", http.StatusInternalServerError, "Unable to open uploaded file")
+		}
+
+		icon, err := s3.UploadIcon(f)
+		if err != nil {
+			log.Println(err)
+			return h.RenderError(c, "new", http.StatusInternalServerError, "Unable to save icon")
+		}
+
+		acc.Icon = icon
+	}
 
 	err = acc.SetSecret(a.Secret)
 	if err != nil {

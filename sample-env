@@ -1,5 +1,7 @@
 APP_KEY=aaaaaaaa
 DB_CONNECTION_STRING="user=postgres password=[YOUR-PASSWORD] host=[HOST] port=5432 dbname=postgres"
-SUPABASE_URL=
-SUPABASE_KEY=
-JWT_SECRET=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_KEY=
+AWS_ENDPOINT=s3.us-west-000.backblazeb2.com
+AWS_REGION=us-west-000
+AWS_BUCKET=totp-assets
