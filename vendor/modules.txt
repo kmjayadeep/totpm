@@ -92,6 +92,9 @@ github.com/gofiber/template/html/v2
 # github.com/gofiber/utils v1.1.0
 ## explicit; go 1.17
 github.com/gofiber/utils
+# github.com/golang-jwt/jwt v3.2.2+incompatible
+## explicit
+github.com/golang-jwt/jwt
 # github.com/google/go-querystring v1.1.0
 ## explicit; go 1.10
 github.com/google/go-querystring/query
