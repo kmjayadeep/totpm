@@ -66,14 +66,14 @@ func (c *Cli) authLogin(email, pass *string) {
 	}
 
 	var token struct {
-		AccessToken string `json:"access_token"`
-		ExpiresIn   uint   `json:"expires_in"`
+		Token string
+		Exp   uint
 	}
 	err = json.NewDecoder(res.Body).Decode(&token)
 	c.handleError(err)
 
 	cfg := &configfile.Config{
-		Token: token.AccessToken,
+		Token: token.Token,
 	}
 
 	c.handleError(cfg.Write())

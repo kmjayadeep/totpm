@@ -24,12 +24,16 @@ func (h *Api) Login(c *fiber.Ctx) error {
 
 	user := &data.User{}
 
+	if in.Email == "" {
+		return c.SendStatus(http.StatusUnauthorized)
+	}
+
 	if res := h.db.Where("email=?", in.Email).First(user); res.Error != nil {
 		return c.SendStatus(http.StatusUnauthorized)
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(in.Password)); err != nil {
-		c.Status(http.StatusUnauthorized).JSON(fiber.Map{
+		return c.Status(http.StatusUnauthorized).JSON(fiber.Map{
 			"Message": "Invalid credentails",
 		})
 	}
